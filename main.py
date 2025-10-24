@@ -73,6 +73,28 @@ class User:
 
     def __repr__(self):
         return f"User({self.name}, bal={self.balance})"
+
+    @staticmethod    
+    def random_name(length: int) -> str:
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for _ in range(length)).capitalize()
+
+def generate_users(count=10) -> list['User']:
+    users = []
+    for _ in range(count):
+        name = User.random_name(6)
+        balance = round(random.uniform(0, 1000), 2)
+        users.append(User(name, balance))
+    return users
+
+# Some tests
+
+print("Random users:")
+print(generate_users(5))
+print(hash("Hello"))
+user = User("John", 100)
+print(user)
+print("Public key:", user.public_key)
 #tests
 print(hash("Hello"))
 user = User("John", 100)
