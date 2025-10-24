@@ -61,8 +61,7 @@ def hash(text: str) -> str:
     # grąžinam hex string
     hexstr = hex(total)[2:].rjust(16, '0')  # 16 simbolių, užpildyta nuliais
     return hexstr
-
-
+          
 # OOP: user
 
 class User:
@@ -74,6 +73,7 @@ class User:
 
     def __repr__(self):
         return f"User({self.name}, bal={self.balance})"
+#tests
 print(hash("Hello"))
 user = User("John", 100)
 print(user)
