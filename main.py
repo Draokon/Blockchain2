@@ -86,7 +86,35 @@ def generate_users(count=10) -> list['User']:
         balance = round(random.uniform(0, 1000), 2)
         users.append(User(name, balance))
     return users
+#OOP: transaction
+class Transaction:
+    def __init__(self, sender: User, receiver: User, amount: int):
+        self.sender = sender
+        self.receiver = receiver
+        self.amount = amount
+        #trasaction id = hash of sender+receiver+amount+random
+        self.tx_id = hash(f"{sender.public_key}->{receiver.public_key}:{amount}:{random.randint(1000,9999)}")
+    def __repr__(self):
+        return f"Transaction({self.sender.name} -> {self.receiver.name}, amount={self.amount}, tx_id={self.tx_id})"
+# test
+tx = Transaction(user, User("Alice", 50), 25)
+print(tx)
+print(tx.tx_id)
 
+# OOP: block
+class Block:
+    def __init__(self, transactions: list[Transaction], previous_hash: str):
+        self.transactions = transactions
+        self.previous_hash = previous_hash
+        # block hash = hash of all tx_ids + previous_hash
+        tx_data = ''.join(tx.tx_id for tx in transactions)
+        self.block_hash = hash(f"{tx_data}:{previous_hash}")
+    def __repr__(self):
+        return f"Block(num_tx={len(self.transactions)}, prev_hash={self.previous_hash}, block_hash={self.block_hash})"
+# test
+block = Block([tx], "0000000000000000")
+print(block)
+print(block.block_hash)
 # Some tests
 
 print("Random users:")
