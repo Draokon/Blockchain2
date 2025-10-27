@@ -61,8 +61,7 @@ def hash(text: str) -> str:
     # grąžinam hex string
     hexstr = hex(total)[2:].rjust(16, '0')  # 16 simbolių, užpildyta nuliais
     return hexstr
-
-
+          
 # OOP: user
 
 class User:
@@ -74,6 +73,57 @@ class User:
 
     def __repr__(self):
         return f"User({self.name}, bal={self.balance})"
+
+    @staticmethod    
+    def random_name(length: int) -> str:
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for _ in range(length)).capitalize()
+
+def generate_users(count=10) -> list['User']:
+    users = []
+    for _ in range(count):
+        name = User.random_name(6)
+        balance = round(random.uniform(0, 1000), 2)
+        users.append(User(name, balance))
+    return users
+#OOP: transaction
+class Transaction:
+    def __init__(self, sender: User, receiver: User, amount: int):
+        self.sender = sender
+        self.receiver = receiver
+        self.amount = amount
+        #trasaction id = hash of sender+receiver+amount+random
+        self.tx_id = hash(f"{sender.public_key}->{receiver.public_key}:{amount}:{random.randint(1000,9999)}")
+    def __repr__(self):
+        return f"Transaction({self.sender.name} -> {self.receiver.name}, amount={self.amount}, tx_id={self.tx_id})"
+# test
+tx = Transaction(user, User("Alice", 50), 25)
+print(tx)
+print(tx.tx_id)
+
+# OOP: block
+class Block:
+    def __init__(self, transactions: list[Transaction], previous_hash: str):
+        self.transactions = transactions
+        self.previous_hash = previous_hash
+        # block hash = hash of all tx_ids + previous_hash
+        tx_data = ''.join(tx.tx_id for tx in transactions)
+        self.block_hash = hash(f"{tx_data}:{previous_hash}")
+    def __repr__(self):
+        return f"Block(num_tx={len(self.transactions)}, prev_hash={self.previous_hash}, block_hash={self.block_hash})"
+# test
+block = Block([tx], "0000000000000000")
+print(block)
+print(block.block_hash)
+# Some tests
+
+print("Random users:")
+print(generate_users(5))
+print(hash("Hello"))
+user = User("John", 100)
+print(user)
+print("Public key:", user.public_key)
+#tests
 print(hash("Hello"))
 user = User("John", 100)
 print(user)
