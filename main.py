@@ -1,5 +1,5 @@
 import random
-
+import string
 char_map ={'a': '2', 'b': '3', 'c': '5', 'd': 'k', 'e': 'o', 'f': 'd', 'g': 'a', 'h': '9', 'i': '1', 'j': 'H', 'k': '4', 'l': 'O', 'm': 'T', 'n': '7',
           'o': '8', 'p': 'R', 'q': 'S', 'r': '6', 's': 'U', 't': 'V', 'u': 'W', 'v': 'X', 'w': 'Y', 'x': 'Z', 'y': '0', 'z': 'Q', 'A': 'p', 'B': '9', 'C': 'h',
             'D': 'n', 'E': '+', 'F': 'j', 'G': 'A', 'H': 'Y', 'I': 'v', 'J': 'S', 'K': '6', 'L': '11', 'M': 'c', 'N': 'P', 'O': 'aa', 'P': 'Q', 'Q': '97', 'R': '2', 'S': 'jk', 
@@ -97,6 +97,7 @@ class Transaction:
     def __repr__(self):
         return f"Transaction({self.sender.name} -> {self.receiver.name}, amount={self.amount}, tx_id={self.tx_id})"
 # test
+user = User("John", 100)
 tx = Transaction(user, User("Alice", 50), 25)
 print(tx)
 print(tx.tx_id)
@@ -123,8 +124,5 @@ print(hash("Hello"))
 user = User("John", 100)
 print(user)
 print("Public key:", user.public_key)
-#tests
-print(hash("Hello"))
-user = User("John", 100)
-print(user)
 print(user.public_key)
+
