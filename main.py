@@ -120,7 +120,31 @@ class Block:
         self.block_hash = hash(f"{tx_data}:{previous_hash}")
     def __repr__(self):
         return f"Block(num_tx={len(self.transactions)}, prev_hash={self.previous_hash}, block_hash={self.block_hash})"
+
+#merkle root 
+
+def merkle_root(tx_ids: List[str]) -> str:
+    if not tx_ids:
+        return hash('')
+
+    layer = tx_ids[:]
+    while len(layer) > 1:
+        next_layer = []
+        for i in range(0, len(layer), 2):
+            left = layer[i]
+            right = layer[i + 1] if i + 1 < len(layer) else layer[i]
+            combined = left + right
+            next_layer.append(hash(combined))
+        layer = next_layer
+    return layer[0]
+          
 # test
+print("Merkle Root Test:")
+tx_ids = [tx.tx_id for tx in [tx]]  
+print("Transaction IDs:", tx_ids)
+root = merkle_root(tx_ids)
+print("Merkle Root:", root)
+
 block = Block([tx], "0000000000000000")
 print(block)
 print(block.block_hash)
