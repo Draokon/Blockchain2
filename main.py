@@ -1,4 +1,6 @@
 import random
+import string
+from typing import List
 
 char_map ={'a': '2', 'b': '3', 'c': '5', 'd': 'k', 'e': 'o', 'f': 'd', 'g': 'a', 'h': '9', 'i': '1', 'j': 'H', 'k': '4', 'l': 'O', 'm': 'T', 'n': '7',
           'o': '8', 'p': 'R', 'q': 'S', 'r': '6', 's': 'U', 't': 'V', 'u': 'W', 'v': 'X', 'w': 'Y', 'x': 'Z', 'y': '0', 'z': 'Q', 'A': 'p', 'B': '9', 'C': 'h',
@@ -94,8 +96,15 @@ class Transaction:
         self.amount = amount
         #trasaction id = hash of sender+receiver+amount+random
         self.tx_id = hash(f"{sender.public_key}->{receiver.public_key}:{amount}:{random.randint(1000,9999)}")
+        #Balanso tikrinimas
+        if sender.balance < amount:
+            raise ValueError("Insufficient balance for transaction")
     def __repr__(self):
         return f"Transaction({self.sender.name} -> {self.receiver.name}, amount={self.amount}, tx_id={self.tx_id})"
+              #transakcijos Id tikrinimas
+    def verify(self) -> bool:
+        expected = hash(f"{self.sender.public_key}->{self.receiver.public_key}:{self.amount}")
+        return self.tx_id == expected
 # test
 tx = Transaction(user, User("Alice", 50), 25)
 print(tx)
